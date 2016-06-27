@@ -20,7 +20,7 @@ import Foundation
      * Called when a socket has completed reading the requested data into memory.
      * Not called if there is an error.
      **/
-    optional func didReadData(socket: RHAsyncSocket, data: NSData)
+    optional func didReadData(socket: RHAsyncSocket, data: NSData?)
     
     /**
      * Called when a socket has completed writing the requested data. Not called if there is an error.
@@ -30,7 +30,7 @@ import Foundation
     /**
      * Called when a socket disconnects with or without error.
      **/
-    optional func didDisconnect(socket: RHAsyncSocket, error: NSError)
+    optional func didDisconnect(socket: RHAsyncSocket, error: NSError?)
     
 }
 
@@ -192,11 +192,11 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
             break
         case NSStreamEvent.ErrorOccurred:
             print("ErrorOccurred")
-            delegate?.didDisconnect!(self, error: aStream.streamError!)
+            delegate?.didDisconnect!(self, error: aStream.streamError)
             break
         case NSStreamEvent.EndEncountered:
             print("EndEncountered")
-            delegate?.didDisconnect!(self, error: aStream.streamError!)
+            delegate?.didDisconnect!(self, error: aStream.streamError)
             break
         default:
             break

@@ -25,7 +25,7 @@ class ViewController: UIViewController, RHAsyncSocketDelegate {
         print("host: \(host), port:\(port)")
     }
     
-    func didReadData(socket: RHAsyncSocket, data: NSData) {
+    func didReadData(socket: RHAsyncSocket, data: NSData?) {
         print("data: \(data)")
     }
     
@@ -33,7 +33,7 @@ class ViewController: UIViewController, RHAsyncSocketDelegate {
         print("didWriteData")
     }
     
-    func didDisconnect(socket: RHAsyncSocket, error: NSError) {
+    func didDisconnect(socket: RHAsyncSocket, error: NSError?) {
         print("didDisconnect: \(error)")
     }
     

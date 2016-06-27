@@ -68,10 +68,10 @@ public class RHSocketChannel: NSObject, RHAsyncSocketDelegate, RHSocketEncoderOu
         delegate?.channelOpened!(self, host: host, port: port)
     }
     
-    public func didReadData(socket: RHAsyncSocket, data: NSData) {
+    public func didReadData(socket: RHAsyncSocket, data: NSData?) {
         print("data: \(data)")
         
-        guard data.length > 0 else {
+        guard data!.length > 0 else {
             return
         }
         
@@ -79,7 +79,7 @@ public class RHSocketChannel: NSObject, RHAsyncSocketDelegate, RHSocketEncoderOu
             return
         }
         
-        self.receiveDataBuffer.appendData(data)
+        self.receiveDataBuffer.appendData(data!)
         
         self.downstreamContext.object = self.receiveDataBuffer
         let decodedLength = self.decoder?.decode(self.downstreamContext, output: self)
@@ -97,7 +97,7 @@ public class RHSocketChannel: NSObject, RHAsyncSocketDelegate, RHSocketEncoderOu
         print("didWriteData")
     }
     
-    public func didDisconnect(socket: RHAsyncSocket, error: NSError) {
+    public func didDisconnect(socket: RHAsyncSocket, error: NSError?) {
         print("didDisconnect: \(error)")
     }
     
