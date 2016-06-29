@@ -11,7 +11,6 @@ import Foundation
 @objc public protocol RHSocketPacket: NSObjectProtocol {
     var object: AnyObject? { get set }
     optional var pid: NSNumber? { get set }
-    init(object: AnyObject?)
     func dataWithPacket() -> NSData?
     func stringWithPacket() -> NSString?
 }
@@ -20,21 +19,13 @@ import Foundation
     optional var timeout: NSTimeInterval { get  set }
 }
 
-public protocol RHDownstreamPacket: RHSocketPacket {
+@objc public protocol RHDownstreamPacket: RHSocketPacket {
     
 }
 
 public class RHSocketPacketContext: NSObject, RHDownstreamPacket, RHUpstreamPacket {
     
     public var object: AnyObject?
-    
-    override convenience init() {
-        self.init(object: nil)
-    }
-    
-    required public init(object: AnyObject?) {
-        self.object = object
-    }
     
     public func dataWithPacket() -> NSData? {
         if ((object?.isKindOfClass(NSData)) != nil) {
@@ -62,4 +53,13 @@ public class RHSocketPacketRequest: RHSocketPacketContext {
 
 public class RHSocketPacketResponse: RHSocketPacketContext {
     public var pid: NSNumber?
+    
+    override convenience init() {
+        self.init(object: nil)
+    }
+    
+    public init(object: AnyObject?) {
+        super.init()
+        self.object = object
+    }
 }

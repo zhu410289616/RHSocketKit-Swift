@@ -109,7 +109,7 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
         return result
     }
     
-    func createReadAndWriteStream(host: String, port: Int) -> Bool {
+    private func createReadAndWriteStream(host: String, port: Int) -> Bool {
         assert(dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey) != nil, "Must be dispatched on socketQueue")
         
         if readStream != nil || writeStream != nil {
@@ -137,7 +137,7 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
         return true
     }
     
-    func addStreamsToRunLoop() -> Bool {
+    private func addStreamsToRunLoop() -> Bool {
         assert(dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey) != nil, "Must be dispatched on socketQueue")
         
         let runLoop = NSRunLoop.currentRunLoop()
@@ -147,7 +147,7 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
         return true
     }
     
-    func removeStreamsFromRunLoop() -> Bool {
+    private func removeStreamsFromRunLoop() -> Bool {
         assert(dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey) != nil, "Must be dispatched on socketQueue")
         
         let runLoop = NSRunLoop.currentRunLoop()
@@ -177,25 +177,28 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
         
         switch eventCode {
         case NSStreamEvent.OpenCompleted:
-            print("OpenCompleted")
-            delegate?.didConnectToHost!(self, host: self.host, port: self.port)
+            print("\(eventCode.rawValue) OpenCompleted")
+            
+            if readStream?.streamStatus == NSStreamStatus.Open && writeStream?.streamStatus == NSStreamStatus.Open {
+                delegate?.didConnectToHost!(self, host: self.host, port: self.port)
+            }
             break
         case NSStreamEvent.HasBytesAvailable:
-            print("HasBytesAvailable")
+            print("\(eventCode.rawValue) HasBytesAvailable")
             let defaultBytesToRead = 4096
             var buffer = [UInt8](count: defaultBytesToRead, repeatedValue: 0)
             let result = readStream?.read(&buffer, maxLength: defaultBytesToRead)
             delegate?.didReadData!(self, data: NSData(bytes: buffer, length: result!))
             break
         case NSStreamEvent.HasSpaceAvailable:
-            print("HasSpaceAvailable")
+            print("\(eventCode.rawValue) HasSpaceAvailable")
             break
         case NSStreamEvent.ErrorOccurred:
-            print("ErrorOccurred")
+            print("\(eventCode.rawValue) ErrorOccurred")
             delegate?.didDisconnect!(self, error: aStream.streamError)
             break
         case NSStreamEvent.EndEncountered:
-            print("EndEncountered")
+            print("\(eventCode.rawValue) EndEncountered")
             delegate?.didDisconnect!(self, error: aStream.streamError)
             break
         default:
@@ -203,7 +206,7 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
         }
     }
     
-    func close(error: NSError?) -> Void {
+    private func close(error: NSError?) -> Void {
         assert(dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey) != nil, "Must be dispatched on socketQueue")
         
         removeStreamsFromRunLoop()
@@ -229,9 +232,9 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
     
     //-----------------------------------------------------
     
-    func writeData(data: NSData, timeout: NSTimeInterval) {
+    func writeData(data: NSData, timeout: NSTimeInterval) -> Int? {
         let buffer = unsafeBitCast(data.bytes, UnsafePointer<UInt8>.self)
-        self.writeStream?.write(buffer, maxLength: data.length)
+        return self.writeStream?.write(buffer, maxLength: data.length)
     }
     
     //-----------------------------------------------------

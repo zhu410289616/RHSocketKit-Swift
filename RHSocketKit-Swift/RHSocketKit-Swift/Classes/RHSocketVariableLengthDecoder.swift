@@ -8,7 +8,7 @@
 
 import Foundation
 
-class RHSocketVariableLengthDecoder: NSObject, RHSocketDecoderProtocol {
+public class RHSocketVariableLengthDecoder: NSObject, RHSocketDecoderProtocol {
     var countOfLengthByte = 2
     var maxFrameSize: Int = 65536
     var nextDecoder: RHSocketDecoderProtocol?

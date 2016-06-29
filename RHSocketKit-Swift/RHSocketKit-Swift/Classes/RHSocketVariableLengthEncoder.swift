@@ -1,5 +1,5 @@
 //
-//  RHSocketDelimiterEncoder.swift
+//  RHSocketVariableLengthEncoder.swift
 //  RHSocketKit-Swift
 //
 //  Created by zhuruhong on 16/6/19.
@@ -8,16 +8,16 @@
 
 import Foundation
 
-class RHSocketDelimiterEncoder: NSObject, RHSocketEncoderProtocol {
-    var delimiterData: NSData!
-    var maxFrameSize: Int = 8192
+public class RHSocketVariableLengthEncoder: NSObject, RHSocketEncoderProtocol {
+    var countOfLengthByte = 2
+    var maxFrameSize: Int = 65536
     
-    convenience init(delimiter: UInt8, maxFrameSize: Int) {
-        self.init(delimiterData: NSData(bytes: unsafeBitCast(delimiter, UnsafePointer<UInt8>.self), length: 1), maxFrameSize: maxFrameSize)
+    convenience override init() {
+        self.init(countOfLengthByte: 2, maxFrameSize: 65535)
     }
     
-    init(delimiterData: NSData, maxFrameSize: Int) {
-        self.delimiterData = delimiterData
+    init(countOfLengthByte: Int, maxFrameSize: Int) {
+        self.countOfLengthByte = countOfLengthByte
         self.maxFrameSize = maxFrameSize
     }
     
@@ -31,8 +31,12 @@ class RHSocketDelimiterEncoder: NSObject, RHSocketEncoderProtocol {
             return
         }
         
-        let sendData = NSMutableData(data: data!)
-        sendData.appendData(self.delimiterData)
+        var dataLen = data?.length
+        let sendData = NSMutableData()
+        
+        sendData.appendBytes(&dataLen, length: self.countOfLengthByte)
+        sendData.appendData(data!)
+        
         let timeout = upstreamPacket.timeout
         
         output.didEncode(sendData, timeout: timeout!)

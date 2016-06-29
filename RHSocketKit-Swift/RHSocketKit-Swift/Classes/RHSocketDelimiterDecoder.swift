@@ -8,7 +8,7 @@
 
 import Foundation
 
-class RHSocketDelimiterDecoder: NSObject, RHSocketDecoderProtocol {
+public class RHSocketDelimiterDecoder: NSObject, RHSocketDecoderProtocol {
     var delimiterData: NSData!
     var maxFrameSize: Int = 8192
     var nextDecoder: RHSocketDecoderProtocol?

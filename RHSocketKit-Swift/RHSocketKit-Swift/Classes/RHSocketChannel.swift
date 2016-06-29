@@ -14,18 +14,16 @@ import Foundation
     optional func channelReceived(channel: RHSocketChannel, packet: AnyObject)
 }
 
-public class RHSocketChannel: NSObject, RHAsyncSocketDelegate, RHSocketEncoderOutputProtocol, RHSocketDecoderOutputProtocol {
+public class RHSocketChannel: RHSocketConnection, RHSocketEncoderOutputProtocol, RHSocketDecoderOutputProtocol {
     
     var host: String!
     var port: Int!
     
-    var encoder = RHSocketEncoderProtocol?()
-    var decoder = RHSocketDecoderProtocol?()
-    
+    var encoder: RHSocketEncoderProtocol?
+    var decoder: RHSocketDecoderProtocol?
     
     var delegate: RHSocketChannelDelegate?
     
-    private var connection: RHAsyncSocket?
     private var receiveDataBuffer = NSMutableData()
     private var downstreamContext = RHSocketPacketResponse()
     
@@ -36,21 +34,12 @@ public class RHSocketChannel: NSObject, RHAsyncSocketDelegate, RHSocketEncoderOu
     }
     
     func openConnection() -> Void {
-        closeConnection()
-        self.connection = RHAsyncSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
-        self.connection?.connect(host: host, port: port)
+        self.disconnect()
+        self.connect(host: host, port: port)
     }
     
     func closeConnection() -> Void {
-        if self.connection != nil {
-            self.connection?.delegate = nil
-            self.connection?.disconnect()
-            self.connection = nil
-        }
-    }
-    
-    func isConnected() -> Bool? {
-        return self.connection?.isConnected()
+        self.disconnect()
     }
     
     func asyncSendPacket(packet: RHUpstreamPacket) -> Void {
@@ -62,13 +51,13 @@ public class RHSocketChannel: NSObject, RHAsyncSocketDelegate, RHSocketEncoderOu
     
     //------------ RHAsyncSocketDelegate
     
-    public func didConnectToHost(socket: RHAsyncSocket, host: String, port: Int) {
+    public override func didConnectToHost(socket: RHAsyncSocket, host: String, port: Int) {
         print("host: \(host), port:\(port)")
         
         delegate?.channelOpened!(self, host: host, port: port)
     }
     
-    public func didReadData(socket: RHAsyncSocket, data: NSData?) {
+    public override func didReadData(socket: RHAsyncSocket, data: NSData?) {
         print("data: \(data)")
         
         guard data!.length > 0 else {
@@ -93,21 +82,13 @@ public class RHSocketChannel: NSObject, RHAsyncSocketDelegate, RHSocketEncoderOu
         self.receiveDataBuffer.setData(remainData)
     }
     
-    public func didWriteData(socket: RHAsyncSocket) {
-        print("didWriteData")
-    }
-    
-    public func didDisconnect(socket: RHAsyncSocket, error: NSError?) {
-        print("didDisconnect: \(error)")
-    }
-    
     //------------ RHSocketEncoderOutputProtocol
     
     func didEncode(encodedData: NSData, timeout: NSTimeInterval) {
         guard encodedData.length > 0 else {
             return
         }
-        self.connection?.writeData(encodedData, timeout: timeout)
+        self.writeData(encodedData, timeout: timeout)
     }
     
     //------------ RHSocketDecoderOutputProtocol

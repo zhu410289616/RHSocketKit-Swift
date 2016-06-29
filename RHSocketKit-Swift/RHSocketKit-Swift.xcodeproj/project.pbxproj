@@ -16,12 +16,18 @@
 		838C131D1D13E5A600D3046E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 838C131B1D13E5A600D3046E /* LaunchScreen.storyboard */; };
 		838C13261D13E60500D3046E /* RHAsyncSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838C13251D13E60500D3046E /* RHAsyncSocket.swift */; };
 		838C132A1D13E64100D3046E /* RHAsyncSocketError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838C13291D13E64100D3046E /* RHAsyncSocketError.swift */; };
-		83FE296C1D1636BD00671680 /* RHSocketCodecProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE296A1D1636BD00671680 /* RHSocketCodecProtocol.swift */; };
-		83FE296E1D1636D000671680 /* RHSocketDelimiterDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE296D1D1636D000671680 /* RHSocketDelimiterDecoder.swift */; };
-		83FE29701D163D8400671680 /* RHSocketDelimiterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE296F1D163D8400671680 /* RHSocketDelimiterEncoder.swift */; };
-		83FE29721D163F6D00671680 /* RHSocketVariableLengthDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE29711D163F6D00671680 /* RHSocketVariableLengthDecoder.swift */; };
+		838D0A1C1D237A6F00AFEB01 /* RHSocketConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838D0A1B1D237A6F00AFEB01 /* RHSocketConnection.swift */; };
+		838D0A1E1D237B0400AFEB01 /* RHSocketConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838D0A1D1D237B0400AFEB01 /* RHSocketConnectionDelegate.swift */; };
+		838D0A241D23A6E100AFEB01 /* RHSocketCodecProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838D0A1F1D23A6E100AFEB01 /* RHSocketCodecProtocol.swift */; };
+		838D0A251D23A6E100AFEB01 /* RHSocketDelimiterDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838D0A201D23A6E100AFEB01 /* RHSocketDelimiterDecoder.swift */; };
+		838D0A261D23A6E100AFEB01 /* RHSocketDelimiterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838D0A211D23A6E100AFEB01 /* RHSocketDelimiterEncoder.swift */; };
+		838D0A271D23A6E100AFEB01 /* RHSocketVariableLengthDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838D0A221D23A6E100AFEB01 /* RHSocketVariableLengthDecoder.swift */; };
+		838D0A281D23A6E100AFEB01 /* RHSocketVariableLengthEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838D0A231D23A6E100AFEB01 /* RHSocketVariableLengthEncoder.swift */; };
+		838D0A2B1D23ADC600AFEB01 /* RHSocketHttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838D0A2A1D23ADC600AFEB01 /* RHSocketHttpRequest.swift */; };
+		838D0A2D1D23AF5100AFEB01 /* RHSocketHttpResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838D0A2C1D23AF5100AFEB01 /* RHSocketHttpResponse.swift */; };
+		838D0A2F1D23B15300AFEB01 /* RHSocketHttpEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838D0A2E1D23B15300AFEB01 /* RHSocketHttpEncoder.swift */; };
+		838D0A311D23B29100AFEB01 /* RHSocketHttpDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838D0A301D23B29100AFEB01 /* RHSocketHttpDecoder.swift */; };
 		83FE29741D16434900671680 /* RHSocketUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE29731D16434900671680 /* RHSocketUtils.swift */; };
-		83FE29761D16474500671680 /* RHSocketVariableLengthEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE29751D16474500671680 /* RHSocketVariableLengthEncoder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,12 +42,18 @@
 		838C131E1D13E5A600D3046E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		838C13251D13E60500D3046E /* RHAsyncSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHAsyncSocket.swift; sourceTree = "<group>"; };
 		838C13291D13E64100D3046E /* RHAsyncSocketError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHAsyncSocketError.swift; sourceTree = "<group>"; };
-		83FE296A1D1636BD00671680 /* RHSocketCodecProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketCodecProtocol.swift; sourceTree = "<group>"; };
-		83FE296D1D1636D000671680 /* RHSocketDelimiterDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketDelimiterDecoder.swift; sourceTree = "<group>"; };
-		83FE296F1D163D8400671680 /* RHSocketDelimiterEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketDelimiterEncoder.swift; sourceTree = "<group>"; };
-		83FE29711D163F6D00671680 /* RHSocketVariableLengthDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketVariableLengthDecoder.swift; sourceTree = "<group>"; };
+		838D0A1B1D237A6F00AFEB01 /* RHSocketConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketConnection.swift; sourceTree = "<group>"; };
+		838D0A1D1D237B0400AFEB01 /* RHSocketConnectionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketConnectionDelegate.swift; sourceTree = "<group>"; };
+		838D0A1F1D23A6E100AFEB01 /* RHSocketCodecProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketCodecProtocol.swift; sourceTree = "<group>"; };
+		838D0A201D23A6E100AFEB01 /* RHSocketDelimiterDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketDelimiterDecoder.swift; sourceTree = "<group>"; };
+		838D0A211D23A6E100AFEB01 /* RHSocketDelimiterEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketDelimiterEncoder.swift; sourceTree = "<group>"; };
+		838D0A221D23A6E100AFEB01 /* RHSocketVariableLengthDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketVariableLengthDecoder.swift; sourceTree = "<group>"; };
+		838D0A231D23A6E100AFEB01 /* RHSocketVariableLengthEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketVariableLengthEncoder.swift; sourceTree = "<group>"; };
+		838D0A2A1D23ADC600AFEB01 /* RHSocketHttpRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketHttpRequest.swift; sourceTree = "<group>"; };
+		838D0A2C1D23AF5100AFEB01 /* RHSocketHttpResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketHttpResponse.swift; sourceTree = "<group>"; };
+		838D0A2E1D23B15300AFEB01 /* RHSocketHttpEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketHttpEncoder.swift; sourceTree = "<group>"; };
+		838D0A301D23B29100AFEB01 /* RHSocketHttpDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketHttpDecoder.swift; sourceTree = "<group>"; };
 		83FE29731D16434900671680 /* RHSocketUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketUtils.swift; sourceTree = "<group>"; };
-		83FE29751D16474500671680 /* RHSocketVariableLengthEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RHSocketVariableLengthEncoder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,42 +100,32 @@
 		838C13241D13E5E700D3046E /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				83FE29681D1636BD00671680 /* Codec */,
+				838D0A291D23ADB900AFEB01 /* Http */,
+				838D0A1F1D23A6E100AFEB01 /* RHSocketCodecProtocol.swift */,
+				838D0A201D23A6E100AFEB01 /* RHSocketDelimiterDecoder.swift */,
+				838D0A211D23A6E100AFEB01 /* RHSocketDelimiterEncoder.swift */,
+				838D0A221D23A6E100AFEB01 /* RHSocketVariableLengthDecoder.swift */,
+				838D0A231D23A6E100AFEB01 /* RHSocketVariableLengthEncoder.swift */,
 				838C13251D13E60500D3046E /* RHAsyncSocket.swift */,
 				838C13291D13E64100D3046E /* RHAsyncSocketError.swift */,
 				83874C431D143D130056953D /* RHSocketChannel.swift */,
 				83874C471D143FF70056953D /* RHSocketPacket.swift */,
 				83FE29731D16434900671680 /* RHSocketUtils.swift */,
+				838D0A1B1D237A6F00AFEB01 /* RHSocketConnection.swift */,
+				838D0A1D1D237B0400AFEB01 /* RHSocketConnectionDelegate.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		83FE29681D1636BD00671680 /* Codec */ = {
+		838D0A291D23ADB900AFEB01 /* Http */ = {
 			isa = PBXGroup;
 			children = (
-				83FE29691D1636BD00671680 /* Delimiter */,
-				83FE296A1D1636BD00671680 /* RHSocketCodecProtocol.swift */,
-				83FE296B1D1636BD00671680 /* VariableLength */,
+				838D0A2A1D23ADC600AFEB01 /* RHSocketHttpRequest.swift */,
+				838D0A2C1D23AF5100AFEB01 /* RHSocketHttpResponse.swift */,
+				838D0A2E1D23B15300AFEB01 /* RHSocketHttpEncoder.swift */,
+				838D0A301D23B29100AFEB01 /* RHSocketHttpDecoder.swift */,
 			);
-			path = Codec;
-			sourceTree = "<group>";
-		};
-		83FE29691D1636BD00671680 /* Delimiter */ = {
-			isa = PBXGroup;
-			children = (
-				83FE296D1D1636D000671680 /* RHSocketDelimiterDecoder.swift */,
-				83FE296F1D163D8400671680 /* RHSocketDelimiterEncoder.swift */,
-			);
-			path = Delimiter;
-			sourceTree = "<group>";
-		};
-		83FE296B1D1636BD00671680 /* VariableLength */ = {
-			isa = PBXGroup;
-			children = (
-				83FE29711D163F6D00671680 /* RHSocketVariableLengthDecoder.swift */,
-				83FE29751D16474500671680 /* RHSocketVariableLengthEncoder.swift */,
-			);
-			path = VariableLength;
+			path = Http;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -197,18 +199,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				838D0A1E1D237B0400AFEB01 /* RHSocketConnectionDelegate.swift in Sources */,
 				838C132A1D13E64100D3046E /* RHAsyncSocketError.swift in Sources */,
 				838C13151D13E5A600D3046E /* ViewController.swift in Sources */,
+				838D0A271D23A6E100AFEB01 /* RHSocketVariableLengthDecoder.swift in Sources */,
 				83FE29741D16434900671680 /* RHSocketUtils.swift in Sources */,
+				838D0A251D23A6E100AFEB01 /* RHSocketDelimiterDecoder.swift in Sources */,
 				83874C481D143FF70056953D /* RHSocketPacket.swift in Sources */,
-				83FE296C1D1636BD00671680 /* RHSocketCodecProtocol.swift in Sources */,
-				83FE29721D163F6D00671680 /* RHSocketVariableLengthDecoder.swift in Sources */,
-				83FE29761D16474500671680 /* RHSocketVariableLengthEncoder.swift in Sources */,
+				838D0A2D1D23AF5100AFEB01 /* RHSocketHttpResponse.swift in Sources */,
 				83874C441D143D130056953D /* RHSocketChannel.swift in Sources */,
-				83FE296E1D1636D000671680 /* RHSocketDelimiterDecoder.swift in Sources */,
 				838C13261D13E60500D3046E /* RHAsyncSocket.swift in Sources */,
-				83FE29701D163D8400671680 /* RHSocketDelimiterEncoder.swift in Sources */,
+				838D0A281D23A6E100AFEB01 /* RHSocketVariableLengthEncoder.swift in Sources */,
+				838D0A2F1D23B15300AFEB01 /* RHSocketHttpEncoder.swift in Sources */,
+				838D0A241D23A6E100AFEB01 /* RHSocketCodecProtocol.swift in Sources */,
 				838C13131D13E5A600D3046E /* AppDelegate.swift in Sources */,
+				838D0A1C1D237A6F00AFEB01 /* RHSocketConnection.swift in Sources */,
+				838D0A311D23B29100AFEB01 /* RHSocketHttpDecoder.swift in Sources */,
+				838D0A261D23A6E100AFEB01 /* RHSocketDelimiterEncoder.swift in Sources */,
+				838D0A2B1D23ADC600AFEB01 /* RHSocketHttpRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
