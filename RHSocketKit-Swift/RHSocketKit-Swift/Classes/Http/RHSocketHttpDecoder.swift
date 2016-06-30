@@ -8,9 +8,9 @@
 
 import Foundation
 
-class RHSocketHttpDecoder: NSObject, RHSocketDecoderProtocol {
+public class RHSocketHttpDecoder: NSObject, RHSocketDecoderProtocol {
     
-    func decode(downstreamPacket: RHDownstreamPacket, output: RHSocketDecoderOutputProtocol) -> Int {
+    public func decode(downstreamPacket: RHDownstreamPacket, output: RHSocketDecoderOutputProtocol) -> Int {
         let downstreamData = downstreamPacket.object!
         let dataLen = downstreamData.length
         var headIndex = 0

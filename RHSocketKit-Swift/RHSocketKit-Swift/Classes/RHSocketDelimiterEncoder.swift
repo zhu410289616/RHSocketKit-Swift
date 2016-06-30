@@ -21,7 +21,7 @@ public class RHSocketDelimiterEncoder: NSObject, RHSocketEncoderProtocol {
         self.maxFrameSize = maxFrameSize
     }
     
-    func encode(upstreamPacket: RHUpstreamPacket, output: RHSocketEncoderOutputProtocol) {
+    public func encode(upstreamPacket: RHUpstreamPacket, output: RHSocketEncoderOutputProtocol) {
         let data = upstreamPacket.dataWithPacket()
         guard data?.length > 0 else {
             return

@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension NSData {
+public extension NSData {
     func reverse() -> NSData {
         let byteCount = self.length
         let dstData = NSMutableData(data: self)
@@ -49,7 +49,7 @@ extension NSData {
     }
 }
 
-extension Int8 {
+public extension Int8 {
     mutating func bytes() -> NSData {
         let valData = NSMutableData()
         valData.appendBytes(&self, length: 1)
@@ -57,7 +57,7 @@ extension Int8 {
     }
 }
 
-extension Int16 {
+public extension Int16 {
     mutating func bytes() -> NSData {
         let valData = NSMutableData()
         valData.appendBytes(&self, length: 2)
@@ -65,7 +65,7 @@ extension Int16 {
     }
 }
 
-extension Int32 {
+public extension Int32 {
     mutating func bytes() -> NSData {
         let valData = NSMutableData()
         valData.appendBytes(&self, length: 4)
@@ -73,7 +73,7 @@ extension Int32 {
     }
 }
 
-extension Int64 {
+public extension Int64 {
     mutating func bytes() -> NSData {
         let valData = NSMutableData()
         valData.appendBytes(&self, length: 8)

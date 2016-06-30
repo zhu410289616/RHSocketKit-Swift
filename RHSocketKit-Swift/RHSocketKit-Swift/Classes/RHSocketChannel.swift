@@ -84,7 +84,7 @@ public class RHSocketChannel: RHSocketConnection, RHSocketEncoderOutputProtocol,
     
     //------------ RHSocketEncoderOutputProtocol
     
-    func didEncode(encodedData: NSData, timeout: NSTimeInterval) {
+    public func didEncode(encodedData: NSData, timeout: NSTimeInterval) {
         guard encodedData.length > 0 else {
             return
         }
@@ -93,7 +93,7 @@ public class RHSocketChannel: RHSocketConnection, RHSocketEncoderOutputProtocol,
     
     //------------ RHSocketDecoderOutputProtocol
     
-    func didDecode(decodedPacket: RHDownstreamPacket) {
+    public func didDecode(decodedPacket: RHDownstreamPacket) {
         self.delegate?.channelReceived!(self, packet: decodedPacket)
     }
 }

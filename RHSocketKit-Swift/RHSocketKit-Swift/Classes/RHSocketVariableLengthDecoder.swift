@@ -22,7 +22,7 @@ public class RHSocketVariableLengthDecoder: NSObject, RHSocketDecoderProtocol {
         self.maxFrameSize = maxFrameSize
     }
     
-    func decode(downstreamPacket: RHDownstreamPacket, output: RHSocketDecoderOutputProtocol) -> Int {
+    public func decode(downstreamPacket: RHDownstreamPacket, output: RHSocketDecoderOutputProtocol) -> Int {
         let object = downstreamPacket.object
         guard object != nil else {
             return -1

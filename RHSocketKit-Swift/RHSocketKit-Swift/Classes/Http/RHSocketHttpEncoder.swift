@@ -10,7 +10,7 @@ import Foundation
 
 public class RHSocketHttpEncoder: NSObject, RHSocketEncoderProtocol {
     
-    func encode(upstreamPacket: RHUpstreamPacket, output: RHSocketEncoderOutputProtocol) {
+    public func encode(upstreamPacket: RHUpstreamPacket, output: RHSocketEncoderOutputProtocol) {
         let data = upstreamPacket.dataWithPacket()
         guard data != nil else {
             return

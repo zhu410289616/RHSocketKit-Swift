@@ -8,18 +8,18 @@
 
 import Foundation
 
-protocol RHSocketEncoderOutputProtocol: NSObjectProtocol {
+public protocol RHSocketEncoderOutputProtocol: NSObjectProtocol {
     func didEncode(encodedData: NSData, timeout: NSTimeInterval)
 }
 
-protocol RHSocketDecoderOutputProtocol: NSObjectProtocol {
+public protocol RHSocketDecoderOutputProtocol: NSObjectProtocol {
     func didDecode(decodedPacket: RHDownstreamPacket)
 }
 
-protocol RHSocketEncoderProtocol: NSObjectProtocol {
+public protocol RHSocketEncoderProtocol: NSObjectProtocol {
     func encode(upstreamPacket: RHUpstreamPacket, output: RHSocketEncoderOutputProtocol)
 }
 
-protocol RHSocketDecoderProtocol: NSObjectProtocol {
+public protocol RHSocketDecoderProtocol: NSObjectProtocol {
     func decode(downstreamPacket: RHDownstreamPacket, output: RHSocketDecoderOutputProtocol) -> Int
 }

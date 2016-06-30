@@ -30,10 +30,8 @@ public class RHSocketConnection: NSObject, RHAsyncSocketDelegate {
         return self.asyncSocket.isConnected()
     }
     
-    func writeData(data: NSData, timeout: NSTimeInterval) -> Int? {
-        let writeLength = self.asyncSocket.writeData(data, timeout: timeout)
-        print("writeLength: \(writeLength)")
-        return writeLength
+    func writeData(data: NSData, timeout: NSTimeInterval) {
+        self.asyncSocket.writeData(data, timeout: timeout)
     }
     
     //RHAsyncSocketDelegate

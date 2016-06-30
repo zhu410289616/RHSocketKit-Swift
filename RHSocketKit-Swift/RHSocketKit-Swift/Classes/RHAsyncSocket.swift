@@ -51,6 +51,12 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
     var readStream: NSInputStream?
     var writeStream: NSOutputStream?
     
+    var readBuffer = NSMutableData()
+    var readBufferOffset = 0
+    
+    var writeBuffer = NSMutableData()
+    var writeBufferOffset = 0
+    
     convenience override init() {
         self.init(delegate: nil, delegateQueue: nil, socketQueue: nil)
     }
@@ -81,8 +87,7 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
     
     func connect(host host: String, port: Int, timeout: NSTimeInterval) -> (result: Int, error: NSError?) {
         
-        
-        //        let error = self.badParamError("Invalid host parameter (nil or \"\"). Should be a domain name or IP address string.")
+        let error = self.badParamError("Invalid host parameter (nil or \"\"). Should be a domain name or IP address string.")
         
         if dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey) != nil {
             createReadAndWriteStream(host, port: port)
@@ -91,7 +96,7 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
                 self.createReadAndWriteStream(host, port: port)
             })
         }
-        return (0, nil)
+        return (0, error)
     }
     
     func isConnected() -> Bool {
@@ -110,7 +115,7 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
     }
     
     private func createReadAndWriteStream(host: String, port: Int) -> Bool {
-        assert(dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey) != nil, "Must be dispatched on socketQueue")
+        assertOnSocketQueue()
         
         if readStream != nil || writeStream != nil {
             // Streams already created
@@ -138,7 +143,7 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
     }
     
     private func addStreamsToRunLoop() -> Bool {
-        assert(dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey) != nil, "Must be dispatched on socketQueue")
+        assertOnSocketQueue()
         
         let runLoop = NSRunLoop.currentRunLoop()
         readStream?.scheduleInRunLoop(runLoop, forMode: NSDefaultRunLoopMode)
@@ -148,7 +153,7 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
     }
     
     private func removeStreamsFromRunLoop() -> Bool {
-        assert(dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey) != nil, "Must be dispatched on socketQueue")
+        assertOnSocketQueue()
         
         let runLoop = NSRunLoop.currentRunLoop()
         readStream?.removeFromRunLoop(runLoop, forMode: NSDefaultRunLoopMode)
@@ -158,7 +163,7 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
     }
     
     func openStreams() -> Void {
-        assert(dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey) != nil, "Must be dispatched on socketQueue")
+        assertOnSocketQueue()
         assert((readStream != nil && writeStream != nil), "Read/Write stream is null")
         
         let readStatus = readStream?.streamStatus
@@ -207,7 +212,7 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
     }
     
     private func close(error: NSError?) -> Void {
-        assert(dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey) != nil, "Must be dispatched on socketQueue")
+        assertOnSocketQueue()
         
         removeStreamsFromRunLoop()
         
@@ -232,12 +237,39 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
     
     //-----------------------------------------------------
     
-    func writeData(data: NSData, timeout: NSTimeInterval) -> Int? {
-        let buffer = unsafeBitCast(data.bytes, UnsafePointer<UInt8>.self)
-        return self.writeStream?.write(buffer, maxLength: data.length)
+    func writeData(data: NSData, timeout: NSTimeInterval) {
+        dispatch_sync(self.socketQueue, {
+            self.writeBuffer.appendData(data)
+            self.pumpWriting()
+        })
+    }
+    
+    func pumpWriting() -> Void {
+        assertOnSocketQueue()
+        
+        let dataLength = self.writeBuffer.length
+        let remainDataLength = dataLength - writeBufferOffset
+        
+        guard remainDataLength > 0 && (writeStream?.hasSpaceAvailable)! else {
+            return
+        }
+        
+        let data = self.writeBuffer
+        let buffer = unsafeBitCast(data.bytes + writeBufferOffset, UnsafePointer<UInt8>.self)
+        let bytesWritten = writeStream?.write(buffer, maxLength: remainDataLength)
+        if bytesWritten == -1 {
+            self.badParamError("Error writing to stream")
+            return
+        }
+        
+        writeBufferOffset = writeBufferOffset + bytesWritten!
     }
     
     //-----------------------------------------------------
+    
+    func assertOnSocketQueue() -> Void {
+        assert(dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey) != nil, "Must be dispatched on socketQueue")
+    }
     
     func badParamError(errorMsg: String) -> NSError {
         let userInfo = [NSLocalizedDescriptionKey : errorMsg]
