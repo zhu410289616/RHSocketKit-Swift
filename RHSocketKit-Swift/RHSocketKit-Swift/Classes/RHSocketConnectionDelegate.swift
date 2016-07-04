@@ -18,6 +18,6 @@ import Foundation
 //    func didRead(con: RHSocketConnectionDelegate, data: NSData, tag: Int)
     
     func readData(timeout: NSTimeInterval)
-    func writeData(data: NSData, timeout: NSTimeInterval)
+    func writeData(data: NSData?, timeout: NSTimeInterval)
     func didReceived(con: RHSocketConnectionDelegate, packet: RHDownstreamPacket)
 }

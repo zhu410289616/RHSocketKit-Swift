@@ -51,11 +51,10 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
     var readStream: NSInputStream?
     var writeStream: NSOutputStream?
     
+    //数据读取缓冲区
     var readBuffer = NSMutableData()
-    var readBufferOffset = 0
-    
+    //数据写入缓冲区
     var writeBuffer = NSMutableData()
-    var writeBufferOffset = 0
     
     convenience override init() {
         self.init(delegate: nil, delegateQueue: nil, socketQueue: nil)
@@ -186,24 +185,32 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
             
             if readStream?.streamStatus == NSStreamStatus.Open && writeStream?.streamStatus == NSStreamStatus.Open {
                 delegate?.didConnectToHost!(self, host: self.host, port: self.port)
+                writeData(nil, timeout: -1)
             }
             break
         case NSStreamEvent.HasBytesAvailable:
             print("\(eventCode.rawValue) HasBytesAvailable")
-            let defaultBytesToRead = 4096
-            var buffer = [UInt8](count: defaultBytesToRead, repeatedValue: 0)
-            let result = readStream?.read(&buffer, maxLength: defaultBytesToRead)
-            delegate?.didReadData!(self, data: NSData(bytes: buffer, length: result!))
+            let bufferSize = 4096
+            var buffer = [UInt8](count: bufferSize, repeatedValue: 0)
+            let bytesRead = readStream?.read(&buffer, maxLength: bufferSize)
+            if bytesRead > 0 {
+                delegate?.didReadData!(self, data: NSData(bytes: buffer, length: bytesRead!))
+            } else {
+                print("bytesRead = \(bytesRead)")
+            }
             break
         case NSStreamEvent.HasSpaceAvailable:
             print("\(eventCode.rawValue) HasSpaceAvailable")
+            writeData(nil, timeout: -1)
             break
         case NSStreamEvent.ErrorOccurred:
             print("\(eventCode.rawValue) ErrorOccurred")
+            disconnect()
             delegate?.didDisconnect!(self, error: aStream.streamError)
             break
         case NSStreamEvent.EndEncountered:
             print("\(eventCode.rawValue) EndEncountered")
+            disconnect()
             delegate?.didDisconnect!(self, error: aStream.streamError)
             break
         default:
@@ -237,9 +244,11 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
     
     //-----------------------------------------------------
     
-    func writeData(data: NSData, timeout: NSTimeInterval) {
-        dispatch_sync(self.socketQueue, {
-            self.writeBuffer.appendData(data)
+    func writeData(data: NSData?, timeout: NSTimeInterval) {
+        dispatch_async(self.socketQueue, {
+            if nil != data && data!.length > 0 {
+                self.writeBuffer.appendData(data!)
+            }
             self.pumpWriting()
         })
     }
@@ -248,21 +257,26 @@ public class RHAsyncSocket: NSObject, NSStreamDelegate {
         assertOnSocketQueue()
         
         let dataLength = self.writeBuffer.length
-        let remainDataLength = dataLength - writeBufferOffset
         
-        guard remainDataLength > 0 && (writeStream?.hasSpaceAvailable)! else {
+        guard dataLength > 0 && (writeStream?.hasSpaceAvailable)! else {
             return
         }
         
-        let data = self.writeBuffer
-        let buffer = unsafeBitCast(data.bytes + writeBufferOffset, UnsafePointer<UInt8>.self)
-        let bytesWritten = writeStream?.write(buffer, maxLength: remainDataLength)
+        let buffer = unsafeBitCast(self.writeBuffer.bytes, UnsafePointer<UInt8>.self)
+        let bytesWritten = writeStream?.write(buffer, maxLength: dataLength)
+        print("bytesWritten = \(bytesWritten)")
+        
         if bytesWritten == -1 {
             self.badParamError("Error writing to stream")
             return
         }
         
-        writeBufferOffset = writeBufferOffset + bytesWritten!
+        guard bytesWritten > 0 else {
+            return
+        }
+        
+        let range = NSRange(location: 0, length: bytesWritten!)
+        writeBuffer = NSMutableData(data: writeBuffer.subdataWithRange(range))
     }
     
     //-----------------------------------------------------

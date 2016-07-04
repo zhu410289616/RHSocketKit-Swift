@@ -45,12 +45,13 @@ class ViewController: UIViewController, RHAsyncSocketDelegate, RHSocketChannelDe
         channel.asyncSendPacket(req)
     }
     
-    func channelClosed(channel: RHSocketChannel, error: NSError) {
+    func channelClosed(channel: RHSocketChannel, error: NSError?) {
         print("channelClosed: \(error)")
     }
     
-    func channelReceived(channel: RHSocketChannel, packet: AnyObject) {
+    func channelReceived(channel: RHSocketChannel, packet: RHDownstreamPacket) {
         print("channelReceived: \(packet)")
+        print("line: \(packet.stringWithPacket())")
     }
     
     // socket

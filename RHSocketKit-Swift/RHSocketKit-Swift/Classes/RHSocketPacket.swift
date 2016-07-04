@@ -37,7 +37,10 @@ public class RHSocketPacketContext: NSObject, RHDownstreamPacket, RHUpstreamPack
     }
     
     public func stringWithPacket() -> NSString? {
-        if ((object?.isKindOfClass(NSString)) != nil) {
+        guard object != nil else {
+            return nil
+        }
+        if (nil != object && (object?.isKindOfClass(NSString))!) {
             return object as? String
         } else if ((object?.isKindOfClass(NSData)) != nil) {
             return NSString(data: unsafeBitCast(object, NSData.self), encoding: NSUTF8StringEncoding)

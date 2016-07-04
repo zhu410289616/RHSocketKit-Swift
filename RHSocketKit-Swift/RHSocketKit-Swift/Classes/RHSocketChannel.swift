@@ -10,8 +10,8 @@ import Foundation
 
 @objc public protocol RHSocketChannelDelegate: NSObjectProtocol {
     optional func channelOpened(channel: RHSocketChannel, host: String, port: Int)
-    optional func channelClosed(channel: RHSocketChannel, error: NSError)
-    optional func channelReceived(channel: RHSocketChannel, packet: AnyObject)
+    optional func channelClosed(channel: RHSocketChannel, error: NSError?)
+    optional func channelReceived(channel: RHSocketChannel, packet: RHDownstreamPacket)
 }
 
 public class RHSocketChannel: RHSocketConnection, RHSocketEncoderOutputProtocol, RHSocketDecoderOutputProtocol {
@@ -54,7 +54,7 @@ public class RHSocketChannel: RHSocketConnection, RHSocketEncoderOutputProtocol,
     public override func didConnectToHost(socket: RHAsyncSocket, host: String, port: Int) {
         print("host: \(host), port:\(port)")
         
-        delegate?.channelOpened!(self, host: host, port: port)
+        self.delegate?.channelOpened!(self, host: host, port: port)
     }
     
     public override func didReadData(socket: RHAsyncSocket, data: NSData?) {
@@ -80,6 +80,10 @@ public class RHSocketChannel: RHSocketConnection, RHSocketEncoderOutputProtocol,
         let remainLength = self.receiveDataBuffer.length - decodedLength!
         let remainData = self.receiveDataBuffer.subdataWithRange(NSRange(location: decodedLength!, length: remainLength))
         self.receiveDataBuffer.setData(remainData)
+    }
+    
+    public override func didDisconnect(socket: RHAsyncSocket, error: NSError?) {
+        self.delegate?.channelClosed!(self, error: error)
     }
     
     //------------ RHSocketEncoderOutputProtocol
